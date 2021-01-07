@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head> 
+      <style>
+          body
+          {
+              font-family: Georgia, 'Times New Roman', Times, serif;
+              font-weight: bold;
+          }
+          .name
+          {
+              font-size: 32px;
+          }
+          .header
+          {
+              padding: 32px;
+              background-color: #a2a6aa;
+          }
+          .main
+          {
+              display:grid;
+              grid-template-columns: 1fr 1fr;
+              background-color: #a2a6aa;
+          }
+          .image-area
+          {
+            background-color: #0852c2;
+            display:grid;
+            justify-items: center;
+
+          }
+          .interactive-area
+          {
+            background-color: rgb(62, 209, 219);
+            display:grid;
+            align-items: center;
+            justify-items:center;
+           }
+          .pet-image
+          {
+            height: 500px;
+            max-width: 100%;
+            padding: 32px;
+          }
+          .activity-icon
+          {
+            height:40px;
+            width:40px;
+          }
+          .activity-row
+          {
+            display:grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            width: 90%;
+            align-items: center;
+
+          }
+          .activity-button
+          {
+              background-color: rgb(193, 195, 196);
+              border-radius: 8px;
+              box-shadow: 0 0 5px 0 grey;
+              color: white;
+              cursor: pointer;
+              height: 100%;
+              display: grid;
+              align-items: center;
+              justify-items: center;
+          }
+          .hidden {
+        display: none;
+      }
+
+      </style>
+  </head>
+  <body>
+    <div class="header">
+        <div class="name">Sid the Sloth</div>
+        <div class="description">Klutz from Ice Age</div>
+      
+    </div>
+    <div class="main">
+        <div class="image-area">
+            <img id="pet-image" class="pet-image" src='sid-neutral.jpg'/>
+        </div>
+            
+        <div class="interactive-area">
+            <div id= "food-row" class="activity-row">
+                <img class="activity-icon" src='dandelion-icon.jpg'/>
+                <div id="food-stat"class="activity-stat">50</div>
+                <div class="activity-button" onclick="giveFood()">Eat Dandelion</div>
+            </div>
+            <div  id= "water-row" class= "activity-row">
+                <img class="activity-icon" src='water-icon.png'/>
+                <div id="water-stat" class="activity-stat">50</div>
+                <div class="activity-button" onclick="giveWater()">Drink Water</div>
+            </div>
+            <div id= "exercise-row" class="activity-row">
+                <img class="activity-icon" src='exercise-icon.png'/>
+                <div id="exercise-stat" class="activity-stat">50</div>
+                <div class="activity-button" onclick="giveExercise()">Exercise</div>
+            </div>
+            
+            <div id = "end-game" class= "end-game hidden" >
+                <div class= "message"> 
+                Your pet has passed out. 
+            </div>
+                <div class= "activity-button restart-button" onclick="restart()">
+                Restart
+                 </div> </div> 
+
+        </div>
+
+    </div>
+  </body>
+
+  <script>
+      var food = 50
+      var water= 50
+      var exercise = 50
+      var hasNotPassedOut = true
+      
+
+      function giveFood () {
+        food += 15;
+        water -= 5
+        exercise -= 5
+        updateHTML ()
+      }
+      function giveWater () {
+        water += 15;
+        food -= 5
+        exercise -= 2
+        updateHTML ()
+      }
+      function giveExercise() {
+        exercise += 30;
+        water -= 15
+        food -= 10
+        updateHTML ()
+      }
+
+      function updateHTML () {
+          document.getElementById("food-stat").innerHTML = food
+          document.getElementById("water-stat").innerHTML = water
+          document.getElementById("exercise-stat").innerHTML = exercise
+
+          var lowestStat = Math.min(food, water, exercise)
+          var imageSrc
+
+        if (lowestStat <= 0) {
+            imageSrc = 'sid-passed-out.jpg'
+            if (hasNotPassedOut) {
+            toggleInteractivity ()
+        }
+            hasNotPassedOut = false
+        } else if (lowestStat < 25) {
+            imageSrc = 'sid-tired.jpg'
+        } else if (lowestStat < 75) {
+            imageSrc = 'sid-neutral.jpg'
+        } else if (lowestStat < 150) {
+            imageSrc = 'sid-upbeat.png'
+        } else {
+            imageSrc = 'sid-exuberant.png'
+        }
+        document.getElementById("pet-image").src = imageSrc
+
+        }
+
+     function agePet () {
+        water = water - 8
+        food = food - 4
+        exercise = exercise - 2
+        updateHTML()
+     }
+     setInterval(agePet, 2000)
+
+     function toggleInteractivity () {
+        document.getElementById("food-row").classList.toggle("hidden")
+        document.getElementById("water-row").classList.toggle("hidden")
+        document.getElementById("exercise-row").classList.toggle("hidden")
+        document.getElementById("end-game").classList.toggle("hidden")
+     }
+
+     function restart () {
+        food = 50
+        water = 50
+        exercise = 50
+        hasNotPassedOut = true 
+        toggleInteractivity ()
+        updateHTML ()
+     }
+
+
+    
+
+
+  </script>
+</html>
